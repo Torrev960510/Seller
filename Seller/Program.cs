@@ -1,27 +1,41 @@
+﻿using Radzen;
 using Seller.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// 👉 Servicios necesarios
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+
+
+// 👉 Servicios de Radzen
+builder.Services.AddRadzenComponents();
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<TooltipService>();
+builder.Services.AddScoped<ContextMenuService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+// 👉 Configuración del pipeline HTTP
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+
+}
+else
+{
+
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
+app.UseRouting();
 app.UseAntiforgery();
 
+// 👉 Mapear componentes Razor con modos interactivos
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
 
 app.Run();
