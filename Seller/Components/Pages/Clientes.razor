@@ -1,0 +1,29 @@
+﻿@page "/clientes"
+@using Seller.Clases
+@inject ESeller ESellerService
+@using Radzen
+@using Radzen.Blazor
+
+<RadzenDataGrid TItem="Cliente" Data="@clientes"
+                ColumnWidth="200px"
+                AllowColumnResize="true"
+                Style="margin-top:20px;">
+
+    <Columns>
+        <RadzenDataGridColumn TItem="Cliente" Property="cliente" Title="ID Cliente" />
+
+        <RadzenDataGridColumn TItem="Cliente" Property="nombre" Title="Nombre" />
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+    private List<Cliente> clientes = new();
+    private string? nombreFilter;
+    private string? idFilter;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var resultado = await ESellerService.ObtenerClientesAsync();
+        clientes = resultado?.ToList() ?? new List<Cliente>();
+    }
+}

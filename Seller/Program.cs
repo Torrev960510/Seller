@@ -3,25 +3,25 @@ using Seller.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 👉 Servicios necesarios
+// Servicios necesarios
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-
-
-// 👉 Servicios de Radzen
+// Servicios de Radzen
 builder.Services.AddRadzenComponents();
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
+builder.Services.AddSingleton<ESeller>();
+
 
 var app = builder.Build();
 
-// 👉 Configuración del pipeline HTTP
+// Configuración del pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
-
+    var connectionString = builder.Configuration.GetConnectionString("ESellerDb");
 }
 else
 {
@@ -33,9 +33,8 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAntiforgery();
 
-// 👉 Mapear componentes Razor con modos interactivos
+// Mapear componentes Razor con modos interactivos
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
 
 app.Run();

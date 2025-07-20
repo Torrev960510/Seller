@@ -1,17 +1,35 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
-
-<PageTitle>Test blazor</PageTitle>
-
-<h1>Test blazor</h1>
+@inject ESeller DbService
 
 
-<RadzenButton Click="@ButtonClicked" Text="Hi"></RadzenButton>
+<PageTitle>Test blazor y conexión BBDD</PageTitle>
+
+<h1>Test blazor y conexión BBDD</h1>
+
+<RadzenButton Click="@CheckConnection" Text="Probar conexión"></RadzenButton>
+
+@if (connectionResult != null)
+{
+    <p>@connectionResult</p>
+}
+
 @code {
-    void ButtonClicked()
+    private string? connectionResult;
+
+    private async Task CheckConnection()
     {
-        // Handle the Click event of RadzenButton
+        bool success = await DbService.TestConnectionAsync();
+        connectionResult = success ? "Conexión exitosa ✅" : "Error al conectar ❌";
     }
 }
+
+
+
+
+
+
+
+
 
 
